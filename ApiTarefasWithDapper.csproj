@@ -13,9 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Endpoints\" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
 </Project>
