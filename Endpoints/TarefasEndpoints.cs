@@ -21,7 +21,7 @@ namespace ApiTarefasWithDapper.Endpoints
             app.MapGet("/tarefas/{id:int}", async (GetConnectionAsync getConnectionAsync, int id) =>
             {
                 using var connection = await getConnectionAsync();
-                var tarefa = await connection.QueryFirstOrDefaultAsync<Tarefa>("SELECT * FROM Tarefas WHERE Id = @Id", new { Id = id });
+                var tarefa = await connection.QueryFirstOrDefaultAsync<Tarefa>("SELECT * FROM Tarefa WHERE Id = @Id", new { Id = id });
                 return tarefa is null ? Results.NotFound() : Results.Ok(tarefa);
             });
 
@@ -35,16 +35,15 @@ namespace ApiTarefasWithDapper.Endpoints
             app.MapPut("/tarefas/{id:int}", async (GetConnectionAsync getConnectionAsync, int id, Tarefa tarefa) =>
             {
                 using var connection = await getConnectionAsync();
-                var affectedRows = await connection.ExecuteAsync("UPDATE Tarefas SET Atividade = @Atividade, Status = @Status WHERE Id = @Id", new { Id = id, tarefa.Atividade, tarefa.Status });
+                var affectedRows = await connection.ExecuteAsync("UPDATE Tarefa SET Atividade = @Atividade, Status = @Status WHERE Id = @Id", new { Id = id, tarefa.Atividade, tarefa.Status });
                 return affectedRows == 0 ? Results.NotFound() : Results.Ok();
             });
 
             app.MapDelete("/tarefas/{id:int}", async (GetConnectionAsync getConnectionAsync, int id) =>
             {
                 using var connection = await getConnectionAsync();
-                var tarefa = connection.GetAsync<Tarefa>(id);
-                await connection.DeleteAsync(tarefa);
-                return tarefa is null ? Results.NotFound() : Results.Ok();
+                var affectedRows = await connection.ExecuteAsync("DELETE FROM Tarefa WHERE Id = @Id", new { Id = id });
+                return affectedRows == 0 ? Results.NotFound() : Results.Ok();
             });
         }
     }
