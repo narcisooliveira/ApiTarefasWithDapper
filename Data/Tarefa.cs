@@ -2,5 +2,5 @@
 
 namespace ApiTarefasWithDapper.Data;
 
-[Table("Tarefas")]
+[Table("Tarefa")]
 public record Tarefa(int Id, string Atividade, string Status);
